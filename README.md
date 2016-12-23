@@ -30,4 +30,4 @@ To really save time use a shortcut (Something like cmd+ctrl+T)
 ![Shortcut example](https://github.com/timaktimak/DeclareType/blob/master/Assets/Shortcut.png)
 
 ## Limitations
-Detects superclasses only for UIKit classes.
+Detects superclasses only for UIKit classes. Works only with Swift.
