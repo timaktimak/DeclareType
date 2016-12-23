@@ -17,6 +17,34 @@ private enum UIKitClass: String {
     case tableViewCell = "UITableViewCell"
     case collectionView = "UICollectionView"
     case collectionViewCell = "UICollectionViewCell"
+    
+    var detectedEndings: [String] {
+        switch self {
+        case .view:
+            return ["View", "view"]
+        case .button:
+            return ["Button", "button"]
+        case .viewController:
+            return ["Controller"]
+        case .tableView:
+            return ["TableView"]
+        case .tableViewCell:
+            return ["Cell"]
+        case .collectionView:
+            return ["CollectionView"]
+        case .collectionViewCell:
+            return ["CollectionViewCell", "CollectionCell"]
+        }
+    }
+    
+    static func detectSuperclass(forTypeName name: String) -> UIKitClass? {
+        // check tableViewCell after collectionViewCell to give it a chance to be detected
+        let candidates: [UIKitClass] = [.view, .button, .viewController, .tableView,
+                                        .collectionViewCell, .collectionView, .tableViewCell]
+        return candidates.findFirstOccurence {
+            return $0.detectedEndings.findFirstOccurence { name.hasSuffix($0) } != nil
+        }
+    }
 }
 
 private enum Type {
@@ -27,26 +55,16 @@ private enum Type {
     case protocolType
     
     static func propableType(forFileName name: String) -> Type {
-        switch name {
-        case let s where s.hasSuffix("ViewController"):
-            return .classType(parentType: .viewController)
-        case let s where s.hasSuffix("View"):
-            return .classType(parentType: .view)
-        case let s where s.hasSuffix("Button"):
-            return .classType(parentType: .button)
-        case let s where s.hasSuffix("TableView"):
-            return .classType(parentType: .tableView)
-        case let s where s.hasSuffix("TableViewCell"):
-            return .classType(parentType: .tableViewCell)
-        case let s where s.hasSuffix("CollectionView"):
-            return .classType(parentType: .collectionView)
-        case let s where s.hasSuffix("CollectionViewCell"):
-            return .classType(parentType: .collectionViewCell)
-        case let s where s.hasSuffix("Protocol") || s.hasSuffix("able"):
-            return .protocolType
-        default:
-            return .classType(parentType: nil)
+        
+        if let detectedClass = UIKitClass.detectSuperclass(forTypeName: name) {
+            return .classType(parentType: detectedClass)
         }
+        
+        if name.hasSuffix("Protocol") || name.hasSuffix("able") {
+            return .protocolType
+        }
+        
+        return .classType(parentType: nil)
     }
     
     func declarationCode(forTypeName name: String, tabWidth: Int) -> String? {
