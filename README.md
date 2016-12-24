@@ -6,7 +6,7 @@ An Xcode Source Editor Extension that generates a type declaration based on the 
 
 ## Why?
 
-Because choosing a Cocoa Touch Class template and selecting the superclass can be tedious.
+Because typing the class name or choosing a Cocoa Touch Class template and selecting the superclass can be tedious.
 
 ## Installation
 
