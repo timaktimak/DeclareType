@@ -26,8 +26,8 @@ Because typing the class name or choosing a Cocoa Touch Class template and selec
 - Will create a class with no parent if no candidate was found
 
 ## Shortcut
-To really save time use a shortcut (Something like cmd+ctrl+T)
-![Shortcut example](https://github.com/timaktimak/DeclareType/blob/master/Assets/Shortcut.png)
+Preferences (⌘ + ,) -> Key Bindings -> Search for "Declare"
+![Shortcut](https://github.com/timaktimak/DeclareType/blob/master/Assets/Shortcut.png)
 
 ## Limitations
 Detects superclasses only for UIKit classes. Works only with Swift.
